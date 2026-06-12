@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>上汽奥迪南区 · 月度项目监控看板</title>
-<script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Microsoft YaHei','PingFang SC',sans-serif;background:#F0F2F5;color:#333}
@@ -23,9 +22,6 @@ body{font-family:'Microsoft YaHei','PingFang SC',sans-serif;background:#F0F2F5;c
 .sec{background:#fff;border-radius:10px;padding:22px;margin-bottom:20px;box-shadow:0 2px 10px rgba(0,0,0,0.05)}
 .sec-title{font-size:17px;font-weight:700;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid #F0F2F5;display:flex;align-items:center;gap:8px}
 .sec-title .dot{width:8px;height:8px;background:#BB0A1E;border-radius:50%}
-.filters{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
-.fbtn{padding:5px 16px;border:1px solid #ddd;border-radius:18px;background:#fff;cursor:pointer;font-size:12px;transition:all .2s;font-family:inherit}
-.fbtn:hover,.fbtn.on{background:#1A1A2E;color:#fff;border-color:#1A1A2E}
 .filter-bar{display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
 .filter-group{display:flex;align-items:center;gap:5px}
 .filter-group label{font-size:11px;color:#999;font-weight:600}
@@ -49,29 +45,25 @@ tbody tr:hover{background:#FAFBFC}
 .tag{display:inline-block;padding:2px 10px;border-radius:12px;font-size:10px;font-weight:600}
 .tag-单店活动{background:#E8F5E9;color:#2E7D32}
 .tag-联合活动{background:#E3F2FD;color:#1565C0}
-.prog-cell{display:flex;align-items:center;gap:6px;min-width:130px}
-.prog-bar{flex:1;height:7px;background:#f0f0f0;border-radius:4px;overflow:hidden}
+.prog-cell{display:flex;align-items:center;gap:8px;min-width:140px}
+.prog-bar{flex:1;height:8px;background:#f0f0f0;border-radius:4px;overflow:hidden}
 .prog-fill{height:100%;border-radius:4px;transition:width .6s}
-.prog-txt{font-size:10px;color:#999;white-space:nowrap;min-width:55px;text-align:right}
+.prog-txt{font-size:12px;font-weight:600;color:#666;white-space:nowrap;min-width:70px;text-align:right;letter-spacing:0.5px}
 .td-date{font-size:11px;color:#666;white-space:nowrap}
 .date-range{background:#f5f5f5;padding:2px 8px;border-radius:10px;font-size:10px}
 .td-status{font-size:11px;font-weight:600;white-space:nowrap}
-.status-done{color:#10B981}  /* 绿色-已完成 */
-.status-ongoing{color:#6366F1}  /* 紫色-进行中 */
-.status-future{color:#9CA3AF}  /* 灰色-未开始 */
-.status-over{color:#F97316}  /* 橙色-已结束 */
+.status-done{color:#10B981}
+.status-ongoing{color:#6366F1}
+.status-future{color:#9CA3AF}
+.status-over{color:#F97316}
 .tfoot-total{background:#1A1A2E;color:#fff;font-weight:600;position:sticky;bottom:0;z-index:10}
 .tfoot-total td{padding:12px 10px;border-top:2px solid #BB0A1E}
 .tfoot-label{font-size:11px;color:#aaa}
 .tfoot-value{font-size:14px;color:#fff}
 table{width:100%;border-collapse:separate;border-spacing:0;font-size:12px;min-width:900px}
 tfoot{position:sticky;bottom:0;z-index:10}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-.cbox{background:#fff;border-radius:10px;padding:18px;box-shadow:0 2px 10px rgba(0,0,0,0.05)}
-.cbox .ct{font-size:14px;font-weight:700;margin-bottom:10px}
-.full{grid-column:1/-1}
 .footer{text-align:center;padding:18px;color:#ccc;font-size:11px}
-/* ===== 移动端响应式适配 ===== */
+
 @media(max-width:768px){
     body{font-size:14px;padding:0}
     .header{padding:18px 16px 14px}
@@ -79,33 +71,25 @@ tfoot{position:sticky;bottom:0;z-index:10}
     .header .sub{font-size:11px}
     .header .badge{font-size:11px;padding:3px 12px}
     .wrap{padding:12px 10px 80px}
-    /* KPI卡片：2列网格 */
     .kpi-row{grid-template-columns:1fr 1fr;gap:8px}
     .kpi-card{padding:12px 14px}
     .kpi-value{font-size:22px}
     .kpi-sub{font-size:10px}
-    /* 筛选栏：折叠优化 */
     .filter-bar{flex-direction:column;gap:8px}
     .filter-group{width:100%}
     .filter-group label{min-width:40px}
     .fsel{flex:1;min-width:0}
     .fsearch{width:100%}
     .fbtn-reset{width:100%;text-align:center}
-    /* 表格：允许横向滚动，取消最小宽度限制 */
     .tbl-wrap{max-height:none;overflow-x:auto;overflow-y:visible;-webkit-overflow-scrolling:touch}
     table{min-width:700px;font-size:11px}
     thead th{padding:8px 6px;font-size:10px}
     tbody td{padding:8px 6px}
     .td-name{max-width:120px}
-    .prog-cell{min-width:100px}
-    .prog-txt{font-size:9px;min-width:48px}
-    /* 合计行 */
+    .prog-cell{min-width:110px}
+    .prog-txt{font-size:10px;min-width:55px}
     .tfoot-total td{padding:10px 6px}
     .tfoot-value{font-size:12px}
-    /* 图表区域 */
-    .grid2{grid-template-columns:1fr;gap:12px}
-    .cbox{padding:14px}
-    /* 隐藏次要列（手机端只显示关键列） */
     .hide-mobile{display:none}
 }
 @media(max-width:480px){
@@ -117,89 +101,33 @@ tfoot{position:sticky;bottom:0;z-index:10}
     .header h1{font-size:16px}
 }
 </style>
-<style>
-/* ===== 密码验证遮罩 ===== */
-.pw-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#1A1A2E 0%,#2D2D44 100%);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column}
-.pw-overlay.hidden{display:none}
-.pw-box{background:#fff;border-radius:16px;padding:40px;max-width:380px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.3)}
-.pw-logo{font-size:28px;font-weight:800;color:#1A1A2E;margin-bottom:4px}
-.pw-sub{font-size:13px;color:#999;margin-bottom:24px}
-.pw-input{width:100%;padding:12px 16px;border:2px solid #e0e0e0;border-radius:10px;font-size:16px;text-align:center;outline:none;transition:border-color .3s;font-family:inherit;letter-spacing:2px}
-.pw-input:focus{border-color:#BB0A1E}
-.pw-btn{width:100%;padding:12px;background:#BB0A1E;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;margin-top:16px;font-family:inherit;transition:background .3s}
-.pw-btn:hover{background:#9a0818}
-.pw-error{color:#EF4444;font-size:12px;margin-top:10px;min-height:18px}
-.pw-hint{font-size:11px;color:#ccc;margin-top:20px}
-</style>
 </head>
 <body>
-<!-- 密码验证 -->
-<div class="pw-overlay" id="pwOverlay">
-    <div class="pw-box">
-        <div class="pw-logo">🔒 访问验证</div>
-        <div class="pw-sub">上汽奥迪南区 · 月度项目监控看板</div>
-        <input type="password" class="pw-input" id="pwInput" placeholder="请输入访问密码" autocomplete="off">
-        <button class="pw-btn" onclick="checkPw()">验 证</button>
-        <div class="pw-error" id="pwError"></div>
-        <div class="pw-hint">请联系管理员获取密码</div>
-    </div>
-</div>
-<script>
-// 密码验证（密码存在localStorage中，记住7天）
-(function(){
-    var saved = localStorage.getItem('audi_pw_ok');
-    var ts = localStorage.getItem('audi_pw_ts');
-    if(saved === '1' && ts && (Date.now() - parseInt(ts)) < 7*24*3600*1000){
-        document.getElementById('pwOverlay').classList.add('hidden');
-    }
-    // 回车键提交
-    document.getElementById('pwInput').addEventListener('keydown', function(e){
-        if(e.key === 'Enter') checkPw();
-    });
-    // 自动聚焦
-    document.getElementById('pwInput').focus();
-})();
-
-function checkPw(){
-    var pwd = document.getElementById('pwInput').value;
-    var correct = 'audi2026';  // 正确密码
-    if(pwd === correct){
-        document.getElementById('pwOverlay').classList.add('hidden');
-        localStorage.setItem('audi_pw_ok', '1');
-        localStorage.setItem('audi_pw_ts', Date.now().toString());
-    } else {
-        document.getElementById('pwError').textContent = '密码错误，请重试';
-        document.getElementById('pwInput').value = '';
-        document.getElementById('pwInput').focus();
-    }
-}
-</script>
-
 <div class="header">
     <h1>上汽奥迪南区 · 月度项目监控看板</h1>
     <div class="sub">SAIC AUDI South Region · Monthly Project Monitoring Dashboard</div>
-    <div class="badge" id="viewDate">2026年5月</div>
+    <div class="badge" id="viewDate">2026年06月12日 查看</div>
 </div>
 <div class="wrap">
 <div class="kpi-row">
     <div class="kpi-card" style="border-left:4px solid #1A1A2E">
         <div class="kpi-title">项目总数</div>
-        <div class="kpi-value" style="color:#1A1A2E">5</div>
-        <div class="kpi-sub">单店 0 + 联合 5</div>
+        <div class="kpi-value" style="color:#1A1A2E">8</div>
+        <div class="kpi-sub">单店 3 + 联合 5</div>
     </div>
     <div class="kpi-card" style="border-left:4px solid #EF4444">
         <div class="kpi-title">潜客完成率</div>
-        <div class="kpi-value" style="color:#EF4444">19.1%</div>
-        <div class="kpi-sub">87 / 455</div>
+        <div class="kpi-value" style="color:#EF4444">10.0%</div>
+        <div class="kpi-sub">87 / 866</div>
     </div>
     <div class="kpi-card" style="border-left:4px solid #EF4444">
         <div class="kpi-title">订单完成率</div>
         <div class="kpi-value" style="color:#EF4444">0.0%</div>
-        <div class="kpi-sub">0 / 0</div>
+        <div class="kpi-sub">0 / 21</div>
     </div>
     <div class="kpi-card" style="border-left:4px solid #1A1A2E">
         <div class="kpi-title">总预算</div>
-        <div class="kpi-value" style="color:#1A1A2E">¥43.8万</div>
+        <div class="kpi-value" style="color:#1A1A2E">¥67.7万</div>
         <div class="kpi-sub">已立项 ¥0.0万</div>
     </div>
     <div class="kpi-card" style="border-left:4px solid #2962FF">
@@ -253,7 +181,64 @@ function checkPw(){
             <th>活动编号</th><th>活动名称</th><th>类型</th><th>分类</th><th>城市</th><th>活动时间</th><th>状态</th>
             <th>潜客进度</th><th>潜客达成</th><th>订单进度</th><th>订单达成</th><th>预算</th>
         </tr></thead>
-        <tbody id="tb"><tr data-type="联合活动" data-city="广州" data-cat="其他-物料礼品支持" data-start="2026-06-01" data-end="2026-06-10">
+        <tbody id="tb"><tr data-type="单店活动" data-city="长沙" data-cat="商超静展" data-start="" data-end="">
+        <td class="td-code">SAR2-202606-BTL-007</td>
+        <td class="td-name" title="快闪商超定展-长沙">快闪商超定展-长沙</td>
+        <td><span class="tag tag-单店活动">单店活动</span></td>
+        <td class="td-cat">商超静展</td>
+        <td class="td-city">长沙</td>
+        <td class="td-date"><span class="date-range">- ~ -</span></td>
+        <td class="td-status" data-start="" data-end="">-</td>
+        <td><div class="prog-cell">
+            <div class="prog-bar"><div class="prog-fill" style="width:0.0%;background:#9E9E9E"></div></div>
+            <span class="prog-txt">0/0</span>
+        </div></td>
+        <td style="color:#9E9E9E;font-weight:700">0%</td>
+        <td><div class="prog-cell">
+            <div class="prog-bar"><div class="prog-fill" style="width:0.0%;background:#9E9E9E"></div></div>
+            <span class="prog-txt">0/0</span>
+        </div></td>
+        <td style="color:#9E9E9E;font-weight:700">0%</td>
+        <td class="td-budget">¥0</td>
+    </tr><tr data-type="单店活动" data-city="南宁" data-cat="商超静展" data-start="2026-06-13" data-end="2026-07-12">
+        <td class="td-code">SAR2-202606-BTL-008</td>
+        <td class="td-name" title="快闪商超定展-南宁">快闪商超定展-南宁</td>
+        <td><span class="tag tag-单店活动">单店活动</span></td>
+        <td class="td-cat">商超静展</td>
+        <td class="td-city">南宁</td>
+        <td class="td-date"><span class="date-range">06/13 ~ 07/12</span></td>
+        <td class="td-status" data-start="2026-06-13" data-end="2026-07-12">-</td>
+        <td><div class="prog-cell">
+            <div class="prog-bar"><div class="prog-fill" style="width:0.0%;background:#EF4444"></div></div>
+            <span class="prog-txt">0/381</span>
+        </div></td>
+        <td style="color:#EF4444;font-weight:700">0%</td>
+        <td><div class="prog-cell">
+            <div class="prog-bar"><div class="prog-fill" style="width:0.0%;background:#EF4444"></div></div>
+            <span class="prog-txt">0/16</span>
+        </div></td>
+        <td style="color:#EF4444;font-weight:700">0%</td>
+        <td class="td-budget">¥228,454</td>
+    </tr><tr data-type="单店活动" data-city="中山" data-cat="转化活动-展厅" data-start="2026-06-21" data-end="2026-06-21">
+        <td class="td-code">SAR2-202606-BTL-009</td>
+        <td class="td-name" title="上汽奥迪E7X中山首批车主交付之夜">上汽奥迪E7X中山首批车主交付之夜</td>
+        <td><span class="tag tag-单店活动">单店活动</span></td>
+        <td class="td-cat">转化活动-展厅</td>
+        <td class="td-city">中山</td>
+        <td class="td-date"><span class="date-range">06/21 ~ 06/21</span></td>
+        <td class="td-status" data-start="2026-06-21" data-end="2026-06-21">-</td>
+        <td><div class="prog-cell">
+            <div class="prog-bar"><div class="prog-fill" style="width:0.0%;background:#EF4444"></div></div>
+            <span class="prog-txt">0/30</span>
+        </div></td>
+        <td style="color:#EF4444;font-weight:700">0%</td>
+        <td><div class="prog-cell">
+            <div class="prog-bar"><div class="prog-fill" style="width:0.0%;background:#EF4444"></div></div>
+            <span class="prog-txt">0/5</span>
+        </div></td>
+        <td style="color:#EF4444;font-weight:700">0%</td>
+        <td class="td-budget">¥11,000</td>
+    </tr><tr data-type="联合活动" data-city="广州" data-cat="其他-物料礼品支持" data-start="2026-06-01" data-end="2026-06-10">
         <td class="td-code">SAR2-202606-BTL-001</td>
         <td class="td-name" title="门店客户转化.涡轮成交-广州">门店客户转化.涡轮成交-广州</td>
         <td><span class="tag tag-联合活动">联合活动</span></td>
@@ -366,7 +351,6 @@ function checkPw(){
 </div>
 <div class="footer">上汽奥迪南区 · 月度项目监控看板</div>
 <script>
-// 动态计算活动状态
 function calculateStatus(startDate, endDate) {
     var today = new Date();
     today.setHours(0,0,0,0);
@@ -383,7 +367,6 @@ function calculateStatus(startDate, endDate) {
     return { status: '进行中', class: 'status-ongoing' };
 }
 
-// 更新所有状态单元格
 function updateAllStatus() {
     var today = new Date();
     var dateStr = today.getFullYear() + '年' + (today.getMonth()+1) + '月' + today.getDate() + '日';
@@ -398,7 +381,6 @@ function updateAllStatus() {
         cell.className = 'td-status ' + result.class;
     });
     
-    // 更新行状态属性
     var rows = document.querySelectorAll('#tb tr');
     rows.forEach(function(row) {
         var startDate = row.getAttribute('data-start');
@@ -453,27 +435,24 @@ function applyFilters(){
         r.style.display = match ? '' : 'none';
         if(match) {
             visible++;
-            // 解析潜客数据
             var qiankeCell = r.querySelector('.prog-txt');
             if(qiankeCell) {
                 var qiankeText = qiankeCell.textContent;
-                var qiankeMatch = qiankeText.match(/(\d+)\/(\d+)/);
+                var qiankeMatch = qiankeText.match(/([\d,]+)\/(\d+)/);
                 if(qiankeMatch) {
-                    totalQiankeActual += parseInt(qiankeMatch[1]) || 0;
-                    totalQiankeTarget += parseInt(qiankeMatch[2]) || 0;
+                    totalQiankeActual += parseInt(qiankeMatch[1].replace(/,/g, '')) || 0;
+                    totalQiankeTarget += parseInt(qiankeMatch[2].replace(/,/g, '')) || 0;
                 }
             }
-            // 解析订单数据（第10列）
             var orderCells = r.querySelectorAll('.prog-txt');
             if(orderCells.length >= 2) {
                 var orderText = orderCells[1].textContent;
-                var orderMatch = orderText.match(/(\d+)\/(\d+)/);
+                var orderMatch = orderText.match(/([\d,]+)\/(\d+)/);
                 if(orderMatch) {
-                    totalOrderActual += parseInt(orderMatch[1]) || 0;
-                    totalOrderTarget += parseInt(orderMatch[2]) || 0;
+                    totalOrderActual += parseInt(orderMatch[1].replace(/,/g, '')) || 0;
+                    totalOrderTarget += parseInt(orderMatch[2].replace(/,/g, '')) || 0;
                 }
             }
-            // 解析预算
             var budgetCell = r.querySelector('.td-budget');
             if(budgetCell) {
                 var budgetText = budgetCell.textContent.replace(/[¥,]/g, '');
@@ -482,18 +461,22 @@ function applyFilters(){
         }
     });
     
-    // 更新合计行
-    document.getElementById('totalQianke').textContent = totalQiankeActual + '/' + totalQiankeTarget;
+    function formatNum(n) { return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+    
+    document.getElementById('totalQianke').textContent = formatNum(totalQiankeActual) + '/' + formatNum(totalQiankeTarget);
     var qiankeRate = totalQiankeTarget > 0 ? (totalQiankeActual/totalQiankeTarget*100).toFixed(1) : 0;
     document.getElementById('totalQiankeRate').textContent = qiankeRate + '%';
     document.getElementById('totalQiankeRate').style.color = qiankeRate >= 100 ? '#10B981' : '#EF4444';
     
-    document.getElementById('totalOrder').textContent = totalOrderActual + '/' + totalOrderTarget;
+    document.getElementById('totalOrder').textContent = formatNum(totalOrderActual) + '/' + formatNum(totalOrderTarget);
     var orderRate = totalOrderTarget > 0 ? (totalOrderActual/totalOrderTarget*100).toFixed(1) : 0;
     document.getElementById('totalOrderRate').textContent = orderRate + '%';
     document.getElementById('totalOrderRate').style.color = orderRate >= 100 ? '#10B981' : '#EF4444';
     
-    document.getElementById('totalBudget').textContent = '¥' + (totalBudget/10000).toFixed(1) + '万';
+    var budgetFormatted = totalBudget >= 10000 
+        ? '¥' + (totalBudget/10000).toFixed(2) + '万' 
+        : '¥' + formatNum(totalBudget);
+    document.getElementById('totalBudget').textContent = budgetFormatted;
     
     document.getElementById('tblSummary').textContent = '显示 ' + visible + ' / ' + rows.length + ' 个项目';
 }
