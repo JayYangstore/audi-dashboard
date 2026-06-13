@@ -1,0 +1,41 @@
+name: 月度项目监控提醒
+
+on:
+  # 北京时间早上 9:00（UTC 1:00）
+  schedule:
+    - cron: "0 1 * * *"
+  # 允许手动触发测试
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "强制推送（即使无内容也发）"
+        required: false
+        default: "false"
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: 📥 检出代码
+        uses: actions/checkout@v4
+
+      - name: 🐍 设置 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 🚀 运行监控脚本
+        env:
+          DINGTALK_WEBHOOK: ${{ secrets.DINGTALK_WEBHOOK }}
+          DINGTALK_SECRET: ${{ secrets.DINGTALK_SECRET }}
+          DINGTALK_KEYWORD: ${{ secrets.DINGTALK_KEYWORD }}
+          DASHBOARD_URL: ${{ secrets.DASHBOARD_URL }}
+        run: |
+          python scripts/dashboard_monitor.py
+
+      - name: 📋 显示日志（调试用）
+        if: always()
+        run: |
+          echo "✅ Workflow 完成"
+          echo "🕐 触发时间: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
